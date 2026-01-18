@@ -3,19 +3,22 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+
 import App from './App.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import store from './slices/index.js';
-import './index.css';
+import { SocketProvider } from './contexts/SocketContext.jsx'; // <-- ВОТ ОНА, ПРОПУЩЕННАЯ СТРОКА
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Provider store={store}> {/* Оборачиваем все в Provider */}
-      <AuthProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </AuthProvider>
+    <Provider store={store}>
+      <SocketProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </AuthProvider>
+      </SocketProvider>
     </Provider>
   </React.StrictMode>,
 );

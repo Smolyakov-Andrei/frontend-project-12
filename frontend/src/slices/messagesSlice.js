@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { fetchData } from './channelsSlice.js'; // Импортируем тот же Thunk
+import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { fetchData } from './channelsSlice.js';
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -7,8 +7,18 @@ const messagesSlice = createSlice({
     messages: [],
   },
   reducers: {
-    addMessage: (state, action) => {
-      state.messages.push(action.payload);
+    // Мы превращаем addMessage в объект, чтобы использовать prepare callback
+    addMessage: {
+      reducer: (state, action) => {
+        // action.payload теперь будет содержать наш объект с id
+        state.messages.push(action.payload);
+      },
+      prepare: (message) => {
+        // Эта функция выполняется ПЕРЕД reducer'ом.
+        // Она получает наш объект сообщения без id...
+        // ... и добавляет к нему уникальный id, сгенерированный nanoid().
+        return { payload: { id: nanoid(), ...message } };
+      },
     },
   },
   extraReducers: (builder) => {
@@ -21,4 +31,3 @@ const messagesSlice = createSlice({
 
 export const { addMessage } = messagesSlice.actions;
 export default messagesSlice.reducer;
-

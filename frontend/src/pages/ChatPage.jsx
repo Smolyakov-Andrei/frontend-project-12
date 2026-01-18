@@ -1,8 +1,9 @@
+import MessageForm from '../components/MessageForm.jsx';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col, Button, Nav } from 'react-bootstrap';
 import { fetchData, setCurrentChannel } from '../slices/channelsSlice.js';
-// В будущем тут будет импорт формы нового сообщения
+
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -58,8 +59,7 @@ const ChatPage = () => {
               ))}
             </div>
             <div className="mt-auto px-5 py-3">
-              {/* Тут будет форма для нового сообщения */}
-              <p>Форма для нового сообщения</p>
+             <MessageForm />
             </div>
           </div>
         </Col>
