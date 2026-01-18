@@ -7,6 +7,6 @@ build:
 	npm run build --prefix frontend
 
 start:
-	npx start-server -s ./frontend/dist
+	npm start
 
 .PHONY: install build start
