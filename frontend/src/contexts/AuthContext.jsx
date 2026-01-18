@@ -3,8 +3,23 @@ import React, { createContext, useState, useContext } from 'react';
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  const currentUser = JSON.parse(localStorage.getItem('user'));
-  const [user, setUser] = useState(currentUser ? { username: currentUser.username, token: currentUser.token } : null);
+  // Функция для безопасной загрузки данных из localStorage
+  const getInitialUser = () => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (!storedUser) {
+        return null;
+      }
+      const userData = JSON.parse(storedUser);
+      // Проверяем, что в данных есть токен
+      return userData && userData.token ? userData : null;
+    } catch (e) {
+      console.error("Failed to parse user from localStorage", e);
+      return null;
+    }
+  };
+
+  const [user, setUser] = useState(getInitialUser());
 
   const logIn = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
@@ -15,15 +30,15 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
     setUser(null);
   };
-
+  
   const getAuthHeader = () => {
-    const userData = JSON.parse(localStorage.getItem('user'));
+    const userData = getInitialUser(); // Используем безопасную функцию
     if (userData && userData.token) {
       return { Authorization: `Bearer ${userData.token}` };
     }
     return {};
   };
-  
+
   return (
     <AuthContext.Provider value={{
       logIn, logOut, user, getAuthHeader,

@@ -11,7 +11,6 @@ function App() {
     <Routes>
       <Route element={<PrivateLayout />}>
         <Route path="/" element={<ChatPage />} />
-        {/* Здесь в будущем можно будет добавлять другие защищенные страницы */}
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="*" element={<NotFoundPage />} />
