@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
@@ -9,24 +9,36 @@ const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [authFailed, setAuthFailed] = useState(false);
+  const usernameField = useRef(null);
+
+  // Фокусируемся на поле ввода имени пользователя при загрузке страницы
+  useEffect(() => {
+    usernameField.current.focus();
+  }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setAuthFailed(false);
     try {
+      // Вот эта часть отсутствовала: реальная отправка данных
       const response = await axios.post('/api/v1/login', {
         username: values.username,
         password: values.password,
       });
+      
+      // Сохраняем данные пользователя и токен
       auth.logIn(response.data);
+      
+      // Перенаправляем на главную страницу
       const from = location.state?.from?.pathname || '/';
       navigate(from);
     } catch (err) {
       setSubmitting(false);
-      if (err.isAxiosError && err.response.status === 401) {
+      if (err.isAxiosError && err.response?.status === 401) {
         setAuthFailed(true);
+        usernameField.current.select(); // Выделяем текст в поле для удобства
         return;
       }
-      // Тут можно будет добавить обработку других ошибок, например, сетевых
+      // Если будет другая ошибка (например, сети), она выведется в консоль
       throw err;
     }
   };
@@ -54,6 +66,7 @@ const LoginPage = () => {
                         className={`form-control ${authFailed ? 'is-invalid' : ''}`}
                         placeholder="Ваш ник"
                         required
+                        innerRef={usernameField} // Привязываем ref
                       />
                       <label htmlFor="username">Ваш ник</label>
                     </div>
