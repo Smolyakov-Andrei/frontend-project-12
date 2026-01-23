@@ -29,7 +29,7 @@ export default {
       messages_one: 'сообщение',
       messages_few: 'сообщения',
       messages_many: 'сообщений',
-      messagePlaceholder: 'Введите сообщение...',
+      messagePlaceholder: 'Новое сообщение',
       send: 'Отправить',
     },
     modals: {
