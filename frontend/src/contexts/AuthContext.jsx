@@ -3,7 +3,6 @@ import React, { createContext, useState, useContext } from 'react';
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-  // Функция для безопасной загрузки данных из localStorage
   const getInitialUser = () => {
     try {
       const storedUser = localStorage.getItem('user');
@@ -11,7 +10,6 @@ export const AuthProvider = ({ children }) => {
         return null;
       }
       const userData = JSON.parse(storedUser);
-      // Проверяем, что в данных есть токен
       return userData && userData.token ? userData : null;
     } catch (e) {
       console.error("Failed to parse user from localStorage", e);
@@ -32,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   };
   
   const getAuthHeader = () => {
-    const userData = getInitialUser(); // Используем безопасную функцию
+    const userData = getInitialUser();
     if (userData && userData.token) {
       return { Authorization: `Bearer ${userData.token}` };
     }

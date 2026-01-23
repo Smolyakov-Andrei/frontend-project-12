@@ -11,7 +11,7 @@ const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const usernameField = useRef(null);
 
-  // Фокусируемся на поле ввода имени пользователя при загрузке страницы
+
   useEffect(() => {
     usernameField.current.focus();
   }, []);
@@ -19,26 +19,26 @@ const LoginPage = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setAuthFailed(false);
     try {
-      // Вот эта часть отсутствовала: реальная отправка данных
+
       const response = await axios.post('/api/v1/login', {
         username: values.username,
         password: values.password,
       });
       
-      // Сохраняем данные пользователя и токен
+
       auth.logIn(response.data);
       
-      // Перенаправляем на главную страницу
+
       const from = location.state?.from?.pathname || '/';
       navigate(from);
     } catch (err) {
       setSubmitting(false);
       if (err.isAxiosError && err.response?.status === 401) {
         setAuthFailed(true);
-        usernameField.current.select(); // Выделяем текст в поле для удобства
+        usernameField.current.select();
         return;
       }
-      // Если будет другая ошибка (например, сети), она выведется в консоль
+      
       throw err;
     }
   };

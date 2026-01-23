@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import App from './App.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import store from './slices/index.js';
-import { SocketProvider } from './contexts/SocketContext.jsx'; // <-- ВОТ ОНА, ПРОПУЩЕННАЯ СТРОКА
+import { SocketProvider } from './contexts/SocketContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

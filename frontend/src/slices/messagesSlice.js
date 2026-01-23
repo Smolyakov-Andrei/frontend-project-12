@@ -1,30 +1,24 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
-import { fetchData } from './channelsSlice.js';
+import { fetchData, removeChannel } from './channelsSlice.js';
 
 const messagesSlice = createSlice({
   name: 'messages',
-  initialState: {
-    messages: [],
-  },
+  initialState: { messages: [] },
   reducers: {
-    // Мы превращаем addMessage в объект, чтобы использовать prepare callback
     addMessage: {
-      reducer: (state, action) => {
-        // action.payload теперь будет содержать наш объект с id
-        state.messages.push(action.payload);
+      reducer: (state, { payload }) => {
+        state.messages.push(payload);
       },
-      prepare: (message) => {
-        // Эта функция выполняется ПЕРЕД reducer'ом.
-        // Она получает наш объект сообщения без id...
-        // ... и добавляет к нему уникальный id, сгенерированный nanoid().
-        return { payload: { id: nanoid(), ...message } };
-      },
+      prepare: (message) => ({ payload: { id: nanoid(), ...message } }),
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchData.fulfilled, (state, action) => {
-        state.messages = action.payload.messages;
+      .addCase(fetchData.fulfilled, (state, { payload }) => {
+        state.messages = payload.messages;
+      })
+      .addCase(removeChannel, (state, { payload: id }) => {
+        state.messages = state.messages.filter((m) => m.channelId !== id);
       });
   },
 });

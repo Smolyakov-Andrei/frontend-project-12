@@ -1,16 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Form, InputGroup, Button } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useSocket } from '../contexts/SocketContext.jsx';
-import { addMessage } from '../slices/messagesSlice.js'; // <-- КЛЮЧЕВОЙ ИМПОРТ
 
 const MessageForm = () => {
   const { user } = useAuth();
   const { sendMessage } = useSocket();
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
-  const dispatch = useDispatch(); // <-- Получаем dispatch для добавления сообщения
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -27,16 +25,10 @@ const MessageForm = () => {
         channelId: currentChannelId,
         username: user.username,
       };
-
-      // 1. Отправляем на сервер (для других)
+      
       sendMessage(message);
       
-      // 2. Добавляем в свой стор (для себя, мгновенно)
-      // Сервер не вернет нам наше же сообщение, поэтому добавляем его вручную
-      // ID сообщения сгенерируется на сервере, но для отображения это не критично
-      dispatch(addMessage(message));
-
-      // 3. Очищаем форму
+      
       resetForm();
       inputRef.current.focus();
     },
@@ -53,6 +45,7 @@ const MessageForm = () => {
           className="border-0 p-0 ps-2"
           onChange={formik.handleChange}
           value={formik.values.body}
+          disabled={formik.isSubmitting}
         />
         <Button type="submit" variant="group-vertical" disabled={!formik.values.body.trim()}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
