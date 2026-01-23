@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext.jsx';
 
 const LoginPage = () => {
@@ -11,7 +12,6 @@ const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const usernameField = useRef(null);
 
-
   useEffect(() => {
     usernameField.current.focus();
   }, []);
@@ -19,16 +19,11 @@ const LoginPage = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setAuthFailed(false);
     try {
-
       const response = await axios.post('/api/v1/login', {
         username: values.username,
         password: values.password,
       });
-      
-
       auth.logIn(response.data);
-      
-
       const from = location.state?.from?.pathname || '/';
       navigate(from);
     } catch (err) {
@@ -38,26 +33,25 @@ const LoginPage = () => {
         usernameField.current.select();
         return;
       }
-      
       throw err;
     }
   };
 
   return (
-    <div className="container-fluid h-100">
-      <div className="row justify-content-center align-content-center h-100">
-        <div className="col-12 col-md-8 col-xxl-6">
-          <div className="card shadow-sm">
-            <div className="card-body row p-5">
-              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+    <Container fluid className="h-100">
+      <Row className="justify-content-center align-content-center h-100">
+        <Col xs={12} md={8} xxl={6}>
+          <Card className="shadow-sm">
+            <Card.Body className="row p-5">
+              <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
                 <h2>Войти</h2>
-              </div>
+              </Col>
               <Formik
                 initialValues={{ username: '', password: '' }}
                 onSubmit={handleSubmit}
               >
                 {({ isSubmitting }) => (
-                  <Form className="col-12 col-md-6 mt-3 mt-mb-0">
+                  <Form as={Col} xs={12} md={6} className="mt-3 mt-mb-0">
                     <h1 className="text-center mb-4">Войти</h1>
                     <div className="form-floating mb-3">
                       <Field
@@ -66,7 +60,7 @@ const LoginPage = () => {
                         className={`form-control ${authFailed ? 'is-invalid' : ''}`}
                         placeholder="Ваш ник"
                         required
-                        innerRef={usernameField} // Привязываем ref
+                        innerRef={usernameField}
                       />
                       <label htmlFor="username">Ваш ник</label>
                     </div>
@@ -82,17 +76,23 @@ const LoginPage = () => {
                       <label htmlFor="password">Пароль</label>
                       {authFailed && <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>}
                     </div>
-                    <button type="submit" disabled={isSubmitting} className="w-100 mb-3 btn btn-outline-primary">
+                    <Button type="submit" disabled={isSubmitting} variant="outline-primary" className="w-100 mb-3">
                       Войти
-                    </button>
+                    </Button>
                   </Form>
                 )}
               </Formik>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </Card.Body>
+            <Card.Footer className="p-4">
+              <div className="text-center">
+                <span>Нет аккаунта? </span>
+                <Link to="/signup">Регистрация</Link>
+              </div>
+            </Card.Footer>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
