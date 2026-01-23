@@ -59,7 +59,7 @@ export default {
       success: {
         add: 'Канал создан',
         rename: 'Канал переименован',
-        remove: 'Канал удален',
+        remove: 'Канал удалён',
       },
       error: {
         network: 'Ошибка соединения',
