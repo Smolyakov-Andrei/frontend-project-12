@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext.jsx';
 
 const LoginPage = () => {
@@ -35,6 +36,7 @@ const LoginPage = () => {
         usernameField.current.select();
         return;
       }
+      toast.error(t('toast.error.network')); 
       throw err;
     }
   };

@@ -42,7 +42,7 @@ export default {
       sure: 'Уверены?',
       unique: 'Должно быть уникальным',
       required: 'Обязательное поле',
-      channelName: 'Имя канала', // Добавил пропущенный ключ
+      channelName: 'Имя канала',
     },
     channels: {
       menu: 'Управление каналом',
@@ -55,5 +55,16 @@ export default {
       toMain: 'на главную страницу',
     },
     logout: 'Выйти',
+    toast: {
+      success: {
+        add: 'Канал создан',
+        rename: 'Канал переименован',
+        remove: 'Канал удален',
+      },
+      error: {
+        network: 'Ошибка соединения',
+        dataLoading: 'Ошибка загрузки данных',
+      },
+    },
   },
 };

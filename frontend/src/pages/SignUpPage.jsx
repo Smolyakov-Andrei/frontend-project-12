@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAuth } from '../contexts/AuthContext.jsx';
 
 const SignUpPage = () => {
@@ -56,6 +57,7 @@ const SignUpPage = () => {
           setRegistrationFailed(true);
           usernameRef.current.select();
         } else {
+          toast.error(t('toast.error.network'));
           console.error(err);
         }
       }

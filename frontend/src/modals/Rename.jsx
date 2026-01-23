@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useSocket } from '../contexts/SocketContext.jsx';
 import { closeModal } from '../slices/modalSlice.js';
 
@@ -34,6 +35,7 @@ const Rename = () => {
     validationSchema,
     onSubmit: ({ name }) => {
       renameExistingChannel({ id: item.id, name });
+      toast.success(t('toast.success.rename'));
       dispatch(closeModal());
     },
   });

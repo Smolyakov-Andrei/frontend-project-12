@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import MainLayout from './components/MainLayout.jsx';
 import PrivateLayout from './components/PrivateLayout.jsx';
@@ -23,6 +24,7 @@ function App() {
         </Route>
       </Routes>
       <Modal />
+      <ToastContainer />
     </>
   );
 }

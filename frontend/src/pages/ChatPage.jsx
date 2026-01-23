@@ -4,6 +4,7 @@ import {
   Container, Row, Col, Button, Nav, Dropdown,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { fetchData, setCurrentChannel } from '../slices/channelsSlice.js';
 import { openModal } from '../slices/modalSlice.js';
 import MessageForm from '../components/MessageForm.jsx';
@@ -11,10 +12,18 @@ import MessageForm from '../components/MessageForm.jsx';
 const ChatPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  
+  const loadingError = useSelector((state) => state.channels.error);
 
   useEffect(() => {
     dispatch(fetchData());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (loadingError) {
+      toast.error(t('toast.error.dataLoading'));
+    }
+  }, [loadingError, t]);
 
   const channels = useSelector((state) => state.channels.channels);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
