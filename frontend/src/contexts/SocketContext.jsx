@@ -2,7 +2,7 @@ import React, { createContext, useContext, useMemo } from 'react';
 import { io } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
 import { addMessage } from '../slices/messagesSlice.js';
-import { addChannel, removeChannel, renameChannel } from '../slices/channelsSlice.js';
+import { addChannel, removeChannel, renameChannel, setCurrentChannel } from '../slices/channelsSlice.js';
 
 const SocketContext = createContext({});
 
@@ -34,8 +34,25 @@ export const SocketProvider = ({ children }) => {
     });
   });
 
-  const deleteExistingChannel = (id) => socket.emit('removeChannel', { id });
-  const renameExistingChannel = (id, name) => socket.emit('renameChannel', { id, name });
+  const deleteExistingChannel = (id) => new Promise((resolve, reject) => {
+    socket.emit('removeChannel', { id }, (response) => {
+      if (response.status === 'ok') {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  });
+
+  const renameExistingChannel = (id, name) => new Promise((resolve, reject) => {
+    socket.emit('renameChannel', { id, name }, (response) => {
+      if (response.status === 'ok') {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+  });
 
   const value = useMemo(() => ({
     sendMessage,
