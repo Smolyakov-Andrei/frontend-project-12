@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Container, Row, Col, Button, Nav, Dropdown,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { fetchData, setCurrentChannel } from '../slices/channelsSlice.js';
 import { openModal } from '../slices/modalSlice.js';
 import MessageForm from '../components/MessageForm.jsx';
 
 const ChatPage = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,11 +28,12 @@ const ChatPage = () => {
   const handleRenameChannel = (id) => dispatch(openModal({ type: 'rename', item: { id } }));
 
   return (
-    <Container className="h-100 my-4 overflow-hidden rounded shadow">
+    <Container fluid className="h-100 my-4 overflow-hidden rounded shadow">
       <Row className="h-100 bg-white flex-md-row">
+        {/* Каналы */}
         <Col xs={4} md={2} className="border-end pt-5 px-0 bg-light">
           <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
-            <span>Каналы</span>
+            <span>{t('chat.channels')}</span>
             <Button variant="outline-primary" className="p-0" size="sm" onClick={handleAddChannel}>+</Button>
           </div>
           <Nav as="ul" fill variant="pills" className="flex-column px-2">
@@ -61,11 +64,11 @@ const ChatPage = () => {
                       id={`dropdown-split-basic-${channel.id}`}
                       className="flex-grow-0"
                     >
-                      <span className="visually-hidden">Управление каналом</span>
+                      <span className="visually-hidden">{t('channels.menu')}</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>Удалить</Dropdown.Item>
-                      <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>Переименовать</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>{t('channels.remove')}</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>{t('channels.rename')}</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                 )}
@@ -74,11 +77,12 @@ const ChatPage = () => {
           </Nav>
         </Col>
 
+        
         <Col className="p-0 h-100">
           <div className="d-flex flex-column h-100">
             <div className="bg-light mb-4 p-3 shadow-sm small">
               <p className="m-0"><b># {currentChannel?.name}</b></p>
-              <span className="text-muted">{`${currentMessages.length} сообщений`}</span>
+              <span className="text-muted">{`${currentMessages.length} ${t('chat.messages')}`}</span>
             </div>
             <div id="messages-box" className="chat-messages overflow-auto px-5">
               {currentMessages.map((message) => (

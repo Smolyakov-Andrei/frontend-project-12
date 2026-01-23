@@ -3,10 +3,12 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useSocket } from '../contexts/SocketContext.jsx';
 import { closeModal } from '../slices/modalSlice.js';
 
 const Rename = () => {
+  const { t } = useTranslation();
   const { renameExistingChannel } = useSocket();
   const dispatch = useDispatch();
   const { item } = useSelector((state) => state.modal);
@@ -20,10 +22,11 @@ const Rename = () => {
   }, []);
 
   const validationSchema = yup.object().shape({
-    name: yup.string().trim().required('Обязательное поле')
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(channelNames, 'Должно быть уникальным'),
+    name: yup.string().trim()
+      .required(t('modals.required'))
+      .min(3, t('signup.min3'))
+      .max(20, t('signup.max20'))
+      .notOneOf(channelNames, t('modals.unique')),
   });
 
   const f = useFormik({
@@ -38,7 +41,7 @@ const Rename = () => {
   return (
     <Modal show onHide={() => dispatch(closeModal())}>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.rename')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit}>
@@ -53,12 +56,16 @@ const Rename = () => {
               id="name"
               className="mb-2"
             />
-            <Form.Label htmlFor="name" className="visually-hidden">Имя канала</Form.Label>
+            <Form.Label htmlFor="name" className="visually-hidden">{t('modals.channelName')}</Form.Label>
             <Form.Control.Feedback type="invalid">{f.errors.name}</Form.Control.Feedback>
           </Form.Group>
           <div className="d-flex justify-content-end">
-            <Button variant="secondary" className="me-2" onClick={() => dispatch(closeModal())}>Отменить</Button>
-            <Button type="submit" variant="primary" disabled={f.isSubmitting}>Отправить</Button>
+            <Button variant="secondary" className="me-2" onClick={() => dispatch(closeModal())}>
+              {t('modals.cancel')}
+            </Button>
+            <Button type="submit" variant="primary" disabled={f.isSubmitting}>
+              {t('modals.submit')}
+            </Button>
           </div>
         </Form>
       </Modal.Body>
