@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useSocket } from '../contexts/SocketContext.jsx';
 import { closeModal } from '../slices/modalSlice.js';
+import { setCurrentChannel } from '../slices/channelsSlice.js';
 import filter from '../utils/filter.js';
 
 const Add = () => {
@@ -32,12 +33,18 @@ const Add = () => {
   const f = useFormik({
     initialValues: { name: '' },
     validationSchema,
-    onSubmit: ({ name }) => {
+    onSubmit: async ({ name }, { setSubmitting }) => {
       const cleanName = filter.clean(name);
-      
-      createNewChannel({ name: cleanName });
-      toast.success(t('toast.success.add'));
-      dispatch(closeModal());
+      try {
+        const data = await createNewChannel(cleanName);
+        
+        dispatch(setCurrentChannel(data.id));
+        
+        toast.success(t('toast.success.add'));
+        dispatch(closeModal());
+      } catch (e) {
+        setSubmitting(false);
+      }
     },
   });
 
