@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useSocket } from '../contexts/SocketContext.jsx';
 import { closeModal } from '../slices/modalSlice.js';
+import filter from '../utils/filter.js';
 
 const Rename = () => {
   const { t } = useTranslation();
@@ -34,7 +35,9 @@ const Rename = () => {
     initialValues: { name: currentChannel.name },
     validationSchema,
     onSubmit: ({ name }) => {
-      renameExistingChannel({ id: item.id, name });
+      const cleanName = filter.clean(name);
+
+      renameExistingChannel({ id: item.id, name: cleanName });
       toast.success(t('toast.success.rename'));
       dispatch(closeModal());
     },

@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useSocket } from '../contexts/SocketContext.jsx';
 import { closeModal } from '../slices/modalSlice.js';
+import filter from '../utils/filter.js';
 
 const Add = () => {
   const { t } = useTranslation();
@@ -32,7 +33,9 @@ const Add = () => {
     initialValues: { name: '' },
     validationSchema,
     onSubmit: ({ name }) => {
-      createNewChannel({ name });
+      const cleanName = filter.clean(name);
+      
+      createNewChannel({ name: cleanName });
       toast.success(t('toast.success.add'));
       dispatch(closeModal());
     },

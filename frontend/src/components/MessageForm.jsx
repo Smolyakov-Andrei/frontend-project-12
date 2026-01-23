@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { Form, InputGroup, Button } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useSocket } from '../contexts/SocketContext.jsx';
+import filter from '../utils/filter.js';
 
 const MessageForm = () => {
   const { t } = useTranslation();
@@ -22,8 +23,10 @@ const MessageForm = () => {
       body: '',
     },
     onSubmit: (values, { resetForm }) => {
+      const cleanBody = filter.clean(values.body);
+
       const message = {
-        body: values.body,
+        body: cleanBody,
         channelId: currentChannelId,
         username: user.username,
       };
