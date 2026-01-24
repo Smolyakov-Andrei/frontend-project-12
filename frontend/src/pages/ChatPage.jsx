@@ -47,40 +47,40 @@ const ChatPage = () => {
             {channels.map(channel => (
               <Nav.Item as="li" key={channel.id} className="w-100">
                 {!channel.removable
-                ?
-                (
-                  <Button
-                    variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                    className="w-100 rounded-0 text-start"
-                    onClick={() => dispatch(setCurrentChannel(channel.id))}
-                  >
-                    <span className="me-1">#</span>
-                    {channel.name}
-                  </Button>
-                ) : (
-                  <Dropdown as="div" className="d-flex btn-group">
+                  ? (
                     <Button
                       variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                      className="w-100 rounded-0 text-start text-truncate"
+                      className="w-100 rounded-0 text-start"
                       onClick={() => dispatch(setCurrentChannel(channel.id))}
                     >
                       <span className="me-1">#</span>
                       {channel.name}
                     </Button>
-                    <Dropdown.Toggle
-                      split
-                      variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                      id={`dropdown-split-basic-${channel.id}`}
-                      className="flex-grow-0"
-                    >
-                      <span className="visually-hidden">{t('channels.menu')}</span>
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>{t('channels.remove')}</Dropdown.Item>
-                      <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>{t('channels.rename')}</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                )}
+                  )
+                  : (
+                    <Dropdown as="div" className="d-flex btn-group">
+                      <Button
+                        variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                        className="w-100 rounded-0 text-start text-truncate"
+                        onClick={() => dispatch(setCurrentChannel(channel.id))}
+                      >
+                        <span className="me-1">#</span>
+                        {channel.name}
+                      </Button>
+                      <Dropdown.Toggle
+                        split
+                        variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                        id={`dropdown-split-basic-${channel.id}`}
+                        className="flex-grow-0"
+                      >
+                        <span className="visually-hidden">{t('channels.menu')}</span>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>{t('channels.remove')}</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>{t('channels.rename')}</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
               </Nav.Item>
             ))}
           </Nav>
@@ -90,14 +90,14 @@ const ChatPage = () => {
             <div className="bg-light mb-4 p-3 shadow-sm small">
               <p className="m-0">
                 <b>
-                # 
-                {currentChannel?.name}
+                  #
+                  {currentChannel?.name}
                 </b>
-                </p>
+              </p>
               <span className="text-muted">{`${currentMessages.length} ${t('chat.messages')}`}</span>
             </div>
             <div id="messages-box" className="chat-messages overflow-auto px-5">
-              {currentMessages.map((message) => (
+              {currentMessages.map(message => (
                 <div key={message.id} className="text-break mb-2">
                   <b>{message.username}</b>
                   :

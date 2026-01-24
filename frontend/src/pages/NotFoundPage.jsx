@@ -9,8 +9,12 @@ const NotFoundPage = () => {
       <h1 className="h4 text-muted">{t('notFound.header')}</h1>
       <p className="text-muted">
         {t('notFound.link')}
-        <Link  
-        to="/">{t('notFound.toMain')}</Link>
+        {' '}
+        <Link
+          to="/"
+        >
+          {t('notFound.toMain')}
+        </Link>
       </p>
     </div>
   )
