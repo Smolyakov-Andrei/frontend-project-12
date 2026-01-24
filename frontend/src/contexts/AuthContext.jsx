@@ -1,4 +1,4 @@
-import  { createContext, useState, useContext } from 'react'
+import { createContext, useState, useContext } from 'react'
 
 const AuthContext = createContext({})
 
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
       }
       const userData = JSON.parse(storedUser)
       return userData && userData.token ? userData : null
-    } 
+    }
     catch (e) {
       console.error('Failed to parse user from localStorage', e)
       return null
@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user')
     setUser(null)
   }
-  
   const getAuthHeader = () => {
     const userData = getInitialUser()
     if (userData && userData.token) {

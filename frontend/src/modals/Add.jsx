@@ -1,4 +1,4 @@
-import  { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
@@ -40,8 +40,8 @@ const Add = () => {
         dispatch(setCurrentChannel(data.id))
         toast.success(t('toast.success.add'))
         dispatch(closeModal())
-      } 
-      catch (e) {
+      }
+      catch {
         setSubmitting(false)
       }
     },

@@ -28,7 +28,7 @@ export const SocketProvider = ({ children }) => {
     socket.emit('newChannel', { name }, (response) => {
       if (response.status === 'ok') {
         resolve(response.data)
-      } 
+      }
       else {
         reject()
       }
@@ -39,7 +39,7 @@ export const SocketProvider = ({ children }) => {
     socket.emit('removeChannel', { id }, (response) => {
       if (response.status === 'ok') {
         resolve()
-      } 
+      }
       else {
         reject()
       }
@@ -50,7 +50,7 @@ export const SocketProvider = ({ children }) => {
     socket.emit('renameChannel', { id, name }, (response) => {
       if (response.status === 'ok') {
         resolve()
-      } 
+      }
       else {
         reject()
       }

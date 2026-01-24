@@ -21,8 +21,8 @@ const Remove = () => {
       dispatch(removeChannel(item.id))
       toast.success(t('toast.success.remove'))
       dispatch(closeModal())
-    } 
-    catch (e) {
+    }
+    catch {
       setSubmitting(false)
     }
   }

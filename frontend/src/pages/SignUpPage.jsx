@@ -1,4 +1,4 @@
-import  { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import axios from 'axios'
@@ -51,13 +51,13 @@ const SignUpPage = () => {
         })
         auth.logIn(response.data)
         navigate('/')
-      } 
+      }
       catch (err) {
         setSubmitting(false)
         if (err.isAxiosError && err.response.status === 409) {
           setRegistrationFailed(true)
           usernameRef.current.select()
-        } 
+        }
         else {
           toast.error(t('toast.error.network'))
           console.error(err)

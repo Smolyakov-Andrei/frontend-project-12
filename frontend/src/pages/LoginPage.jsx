@@ -29,7 +29,7 @@ const LoginPage = () => {
       auth.logIn(response.data)
       const from = location.state?.from?.pathname || '/'
       navigate(from)
-    } 
+    }
     catch (err) {
       setSubmitting(false)
       if (err.isAxiosError && err.response?.status === 401) {
@@ -90,7 +90,8 @@ const LoginPage = () => {
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>{t('login.new')} </span>
+                <span>
+                  {t('login.new')} </span>
                 <Link to="/signup">{t('login.signup')}</Link>
               </div>
             </Card.Footer>
