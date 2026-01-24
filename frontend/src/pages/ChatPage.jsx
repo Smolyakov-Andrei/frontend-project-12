@@ -48,25 +48,25 @@ const ChatPage = () => {
               <Nav.Item as="li" key={channel.id} className="w-100">
                 {!channel.removable
                   ? (
-                    <Button
-                      variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                      className="w-100 rounded-0 text-start"
-                      onClick={() => dispatch(setCurrentChannel(channel.id))}
-                    >
-                      <span className="me-1">#</span>
-                      {channel.name}
-                    </Button>
-                  )
-                  : (
-                    <Dropdown as="div" className="d-flex btn-group">
                       <Button
                         variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                        className="w-100 rounded-0 text-start text-truncate"
+                        className="w-100 rounded-0 text-start"
                         onClick={() => dispatch(setCurrentChannel(channel.id))}
                       >
                         <span className="me-1">#</span>
                         {channel.name}
                       </Button>
+                    )
+                  : (
+                      <Dropdown as="div" className="d-flex btn-group">
+                        <Button
+                          variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                          className="w-100 rounded-0 text-start text-truncate"
+                          onClick={() => dispatch(setCurrentChannel(channel.id))}
+                        >
+                          <span className="me-1">#</span>
+                          {channel.name}
+                        </Button>
                       <Dropdown.Toggle
                         split
                         variant={channel.id === currentChannelId ? 'secondary' : 'light'}
