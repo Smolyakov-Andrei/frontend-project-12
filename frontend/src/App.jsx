@@ -1,14 +1,13 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { Routes, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
 
-import MainLayout from './components/MainLayout.jsx';
-import PrivateLayout from './components/PrivateLayout.jsx';
-import ChatPage from './pages/ChatPage.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import SignUpPage from './pages/SignUpPage.jsx';
-import NotFoundPage from './pages/NotFoundPage.jsx';
-import Modal from './modals/index.jsx';
+import MainLayout from './components/MainLayout.jsx'
+import PrivateLayout from './components/PrivateLayout.jsx'
+import ChatPage from './pages/ChatPage.jsx'
+import LoginPage from './pages/LoginPage.jsx'
+import SignUpPage from './pages/SignUpPage.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx'
+import Modal from './modals/index.jsx'
 
 function App() {
   return (
@@ -26,7 +25,7 @@ function App() {
       <Modal />
       <ToastContainer />
     </>
-  );
+  )
 }
 
-export default App;
+export default App

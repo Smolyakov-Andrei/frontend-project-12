@@ -1,26 +1,26 @@
-import React, { useEffect, useRef } from 'react';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { useSelector, useDispatch } from 'react-redux';
-import { Modal, Form, Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { useSocket } from '../contexts/SocketContext.jsx';
-import { closeModal } from '../slices/modalSlice.js';
-import { setCurrentChannel } from '../slices/channelsSlice.js';
-import filter from '../utils/filter.js';
+import  { useEffect, useRef } from 'react'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { useSelector, useDispatch } from 'react-redux'
+import { Modal, Form, Button } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { useSocket } from '../contexts/SocketContext.jsx'
+import { closeModal } from '../slices/modalSlice.js'
+import { setCurrentChannel } from '../slices/channelsSlice.js'
+import filter from '../utils/filter.js'
 
 const Add = () => {
-  const { t } = useTranslation();
-  const { createNewChannel } = useSocket();
-  const dispatch = useDispatch();
-  const channels = useSelector((state) => state.channels.channels);
-  const channelNames = channels.map((c) => c.name);
-  const inputRef = useRef(null);
+  const { t } = useTranslation()
+  const { createNewChannel } = useSocket()
+  const dispatch = useDispatch()
+  const channels = useSelector(state => state.channels.channels)
+  const channelNames = channels.map(c => c.name)
+  const inputRef = useRef(null)
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.focus()
+  }, [])
 
   const validationSchema = yup.object().shape({
     name: yup.string().trim()
@@ -28,25 +28,24 @@ const Add = () => {
       .min(3, t('signup.min3'))
       .max(20, t('signup.max20'))
       .notOneOf(channelNames, t('modals.unique')),
-  });
+  })
 
   const f = useFormik({
     initialValues: { name: '' },
     validationSchema,
     onSubmit: async ({ name }, { setSubmitting }) => {
-      const cleanName = filter.clean(name);
+      const cleanName = filter.clean(name)
       try {
-        const data = await createNewChannel(cleanName);
-        
-        dispatch(setCurrentChannel(data.id));
-        
-        toast.success(t('toast.success.add'));
-        dispatch(closeModal());
-      } catch (e) {
-        setSubmitting(false);
+        const data = await createNewChannel(cleanName)
+        dispatch(setCurrentChannel(data.id))
+        toast.success(t('toast.success.add'))
+        dispatch(closeModal())
+      } 
+      catch (e) {
+        setSubmitting(false)
       }
     },
-  });
+  })
 
   return (
     <Modal show onHide={() => dispatch(closeModal())}>
@@ -80,7 +79,7 @@ const Add = () => {
         </Form>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Add;
+export default Add

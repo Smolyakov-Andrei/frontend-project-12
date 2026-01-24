@@ -1,45 +1,46 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Formik, Form, Field } from 'formik';
-import axios from 'axios';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { useAuth } from '../contexts/AuthContext.jsx';
+import { useState, useEffect, useRef } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Formik, Form, Field } from 'formik'
+import axios from 'axios'
+import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { useAuth } from '../contexts/AuthContext.jsx'
 
 const LoginPage = () => {
-  const { t } = useTranslation();
-  const auth = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [authFailed, setAuthFailed] = useState(false);
-  const usernameField = useRef(null);
+  const { t } = useTranslation()
+  const auth = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [authFailed, setAuthFailed] = useState(false)
+  const usernameField = useRef(null)
 
   useEffect(() => {
-    usernameField.current.focus();
-  }, []);
+    usernameField.current.focus()
+  }, [])
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    setAuthFailed(false);
+    setAuthFailed(false)
     try {
       const response = await axios.post('/api/v1/login', {
         username: values.username,
         password: values.password,
-      });
-      auth.logIn(response.data);
-      const from = location.state?.from?.pathname || '/';
-      navigate(from);
-    } catch (err) {
-      setSubmitting(false);
+      })
+      auth.logIn(response.data)
+      const from = location.state?.from?.pathname || '/'
+      navigate(from)
+    } 
+    catch (err) {
+      setSubmitting(false)
       if (err.isAxiosError && err.response?.status === 401) {
-        setAuthFailed(true);
-        usernameField.current.select();
-        return;
+        setAuthFailed(true)
+        usernameField.current.select()
+        return
       }
-      toast.error(t('toast.error.network')); 
-      throw err;
+      toast.error(t('toast.error.network'))
+      throw err
     }
-  };
+  }
 
   return (
     <Container fluid className="h-100">
@@ -97,7 +98,7 @@ const LoginPage = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

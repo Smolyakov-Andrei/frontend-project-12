@@ -1,41 +1,41 @@
-import React, { useEffect, useRef } from 'react';
-import { useFormik } from 'formik';
-import { Form, InputGroup, Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '../contexts/AuthContext.jsx';
-import { useSocket } from '../contexts/SocketContext.jsx';
-import filter from '../utils/filter.js';
+import  { useEffect, useRef } from 'react'
+import { useFormik } from 'formik'
+import { Form, InputGroup, Button } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+import { useAuth } from '../contexts/AuthContext.jsx'
+import { useSocket } from '../contexts/SocketContext.jsx'
+import filter from '../utils/filter.js'
 
 const MessageForm = () => {
-  const { t } = useTranslation();
-  const { user } = useAuth();
-  const { sendMessage } = useSocket();
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
-  const inputRef = useRef(null);
+  const { t } = useTranslation()
+  const { user } = useAuth()
+  const { sendMessage } = useSocket()
+  const currentChannelId = useSelector(state => state.channels.currentChannelId)
+  const inputRef = useRef(null)
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, [currentChannelId]);
+    inputRef.current.focus()
+  }, [currentChannelId])
 
   const formik = useFormik({
     initialValues: {
       body: '',
     },
     onSubmit: (values, { resetForm }) => {
-      const cleanBody = filter.clean(values.body);
+      const cleanBody = filter.clean(values.body)
 
       const message = {
         body: cleanBody,
         channelId: currentChannelId,
         username: user.username,
-      };
+      }
 
-      sendMessage(message);
-      resetForm();
-      inputRef.current.focus();
+      sendMessage(message)
+      resetForm()
+      inputRef.current.focus()
     },
-  });
+  })
 
   return (
     <Form onSubmit={formik.handleSubmit} className="py-1 border rounded-2">
@@ -58,7 +58,7 @@ const MessageForm = () => {
         </Button>
       </InputGroup>
     </Form>
-  );
-};
+  )
+}
 
-export default MessageForm;
+export default MessageForm

@@ -1,32 +1,31 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Modal, Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { useSocket } from '../contexts/SocketContext.jsx';
-import { closeModal } from '../slices/modalSlice.js';
-import { removeChannel } from '../slices/channelsSlice.js';
+import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Modal, Button } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { useSocket } from '../contexts/SocketContext.jsx'
+import { closeModal } from '../slices/modalSlice.js'
+import { removeChannel } from '../slices/channelsSlice.js'
 
 const Remove = () => {
-  const { t } = useTranslation();
-  const { deleteExistingChannel } = useSocket();
-  const dispatch = useDispatch();
-  const { item } = useSelector((state) => state.modal);
-  const [isSubmitting, setSubmitting] = useState(false);
+  const { t } = useTranslation()
+  const { deleteExistingChannel } = useSocket()
+  const dispatch = useDispatch()
+  const { item } = useSelector(state => state.modal)
+  const [isSubmitting, setSubmitting] = useState(false)
 
   const handleDelete = async () => {
-    setSubmitting(true);
+    setSubmitting(true)
     try {
-      await deleteExistingChannel(item.id);
-      
-      dispatch(removeChannel(item.id));
-      
-      toast.success(t('toast.success.remove'));
-      dispatch(closeModal());
-    } catch (e) {
-      setSubmitting(false);
+      await deleteExistingChannel(item.id)
+      dispatch(removeChannel(item.id))
+      toast.success(t('toast.success.remove'))
+      dispatch(closeModal())
+    } 
+    catch (e) {
+      setSubmitting(false)
     }
-  };
+  }
 
   return (
     <Modal show onHide={() => dispatch(closeModal())}>
@@ -45,7 +44,7 @@ const Remove = () => {
         </div>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Remove;
+export default Remove
