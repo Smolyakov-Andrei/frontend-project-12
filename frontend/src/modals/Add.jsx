@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react'
 import { useFormik } from 'formik'
-import * as yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Form, Button } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +8,7 @@ import { useSocket } from '../contexts/SocketContext.jsx'
 import { closeModal } from '../slices/modalSlice.js'
 import { setCurrentChannel } from '../slices/channelsSlice.js'
 import filter from '../utils/filter.js'
+import { getChannelSchema } from '../utils/validationSchemas.js'
 
 const Add = () => {
   const { t } = useTranslation()
@@ -22,29 +22,23 @@ const Add = () => {
     inputRef.current.focus()
   }, [])
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().trim()
-      .required(t('modals.required'))
-      .min(3, t('signup.min3'))
-      .max(20, t('signup.max20'))
-      .notOneOf(channelNames, t('modals.unique')),
-  })
+  const handleSubmit = async ({ name }, { setSubmitting }) => {
+    const cleanName = filter.clean(name)
+    try {
+      const data = await createNewChannel(cleanName)
+      dispatch(setCurrentChannel(data.id))
+      toast.success(t('toast.success.add'))
+      dispatch(closeModal())
+    }
+    catch {
+      setSubmitting(false)
+    }
+  }
 
   const f = useFormik({
     initialValues: { name: '' },
-    validationSchema,
-    onSubmit: async ({ name }, { setSubmitting }) => {
-      const cleanName = filter.clean(name)
-      try {
-        const data = await createNewChannel(cleanName)
-        dispatch(setCurrentChannel(data.id))
-        toast.success(t('toast.success.add'))
-        dispatch(closeModal())
-      }
-      catch {
-        setSubmitting(false)
-      }
-    },
+    validationSchema: getChannelSchema(channelNames, t),
+    onSubmit: handleSubmit,
   })
 
   return (

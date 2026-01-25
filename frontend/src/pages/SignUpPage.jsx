@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { useFormik } from 'formik'
-import * as yup from 'yup'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap'
+import {
+  Form, Button, Container, Row, Col, Card,
+} from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
 import { useAuth } from '../contexts/AuthContext.jsx'
+import { getSignupSchema } from '../utils/validationSchemas.js'
 
 const SignUpPage = () => {
   const { t } = useTranslation()
@@ -19,21 +21,28 @@ const SignUpPage = () => {
     usernameRef.current.focus()
   }, [])
 
-  const validationSchema = yup.object().shape({
-    username: yup.string()
-      .trim()
-      .required(t('signup.required'))
-      .min(3, t('signup.min3'))
-      .max(20, t('signup.max20')),
-    password: yup.string()
-      .trim()
-      .required(t('signup.required'))
-      .min(6, t('signup.min6')),
-    confirmPassword: yup.string()
-      .test('password-match', t('signup.passwordsMustMatch'), function (value) {
-        return this.parent.password === value
-      }),
-  })
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setRegistrationFailed(false)
+    try {
+      const response = await axios.post('/api/v1/signup', {
+        username: values.username,
+        password: values.password,
+      })
+      auth.logIn(response.data)
+      navigate('/')
+    }
+    catch (err) {
+      setSubmitting(false)
+      if (err.isAxiosError && err.response.status === 409) {
+        setRegistrationFailed(true)
+        usernameRef.current.select()
+      }
+      else {
+        toast.error(t('toast.error.network'))
+        console.error(err)
+      }
+    }
+  }
 
   const f = useFormik({
     initialValues: {
@@ -41,29 +50,8 @@ const SignUpPage = () => {
       password: '',
       confirmPassword: '',
     },
-    validationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
-      setRegistrationFailed(false)
-      try {
-        const response = await axios.post('/api/v1/signup', {
-          username: values.username,
-          password: values.password,
-        })
-        auth.logIn(response.data)
-        navigate('/')
-      }
-      catch (err) {
-        setSubmitting(false)
-        if (err.isAxiosError && err.response.status === 409) {
-          setRegistrationFailed(true)
-          usernameRef.current.select()
-        }
-        else {
-          toast.error(t('toast.error.network'))
-          console.error(err)
-        }
-      }
-    },
+    validationSchema: getSignupSchema(t),
+    onSubmit: handleSubmit,
   })
 
   return (

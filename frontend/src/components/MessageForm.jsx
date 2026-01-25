@@ -18,23 +18,24 @@ const MessageForm = () => {
     inputRef.current.focus()
   }, [currentChannelId])
 
+  const handleSubmit = (values, { resetForm }) => {
+    const cleanBody = filter.clean(values.body)
+    const message = {
+      body: cleanBody,
+      channelId: currentChannelId,
+      username: user.username,
+    }
+
+    sendMessage(message)
+    resetForm()
+    inputRef.current.focus()
+  }
+
   const formik = useFormik({
     initialValues: {
       body: '',
     },
-    onSubmit: (values, { resetForm }) => {
-      const cleanBody = filter.clean(values.body)
-
-      const message = {
-        body: cleanBody,
-        channelId: currentChannelId,
-        username: user.username,
-      }
-
-      sendMessage(message)
-      resetForm()
-      inputRef.current.focus()
-    },
+    onSubmit: handleSubmit,
   })
 
   return (

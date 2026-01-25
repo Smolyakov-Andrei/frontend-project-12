@@ -14,8 +14,10 @@ import { SocketProvider } from './contexts/SocketContext.jsx'
 import i18n from './init.js'
 
 const rollbarConfig = {
-  accessToken: 'f847fb27a50b466ea3a6b2f5c17ef1c9',
-  environment: 'production',
+  accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+  environment: import.meta.env.VITE_NODE_ENV || 'development',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
