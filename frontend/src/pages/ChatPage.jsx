@@ -74,20 +74,20 @@ const ChatPage = () => {
                           <span className="me-1">#</span>
                           {channel.name}
                         </Button>
-                      <Dropdown.Toggle
-                        split
-                        variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                        id={`dropdown-split-basic-${channel.id}`}
-                        className="flex-grow-0"
-                      >
-                        <span className="visually-hidden">{t('channels.menu')}</span>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>{t('channels.remove')}</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>{t('channels.rename')}</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )}
+                  <Dropdown.Toggle
+                    split
+                    variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                    id={`dropdown-split-basic-${channel.id}`}
+                    className="flex-grow-0"
+                  >
+                    <span className="visually-hidden">{t('channels.menu')}</span>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>{t('channels.remove')}</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>{t('channels.rename')}</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                    )}
               </Nav.Item>
             ))}
           </Nav>
@@ -97,22 +97,24 @@ const ChatPage = () => {
           <div className="bg-light mb-4 p-3 shadow-sm small flex-shrink-0">
             <p className="m-0">
               <b>
-                # 
-                {currentChannel?.name}</b>
+                #
+                {currentChannel?.name}
+              </b>
             </p>
             <span className="text-muted">{`${currentMessages.length} ${t('chat.messages')}`}</span>
-          </div>
-          
-          
-          <div 
-            id="messages-box" 
+         </div>
+
+          <div
+            id="messages-box"
             className="chat-messages px-5 "
             style={{ flex: 1, overflowY: 'auto' }}
             ref={messagesBoxRef}
           >
             {currentMessages.map(message => (
               <div key={message.id} className="text-break mb-2">
-                <b>{message.username}</b>: {message.body}
+                <b>{message.username}</b>
+                :
+                {message.body}
               </div>
             ))}
           </div>
