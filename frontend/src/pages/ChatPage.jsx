@@ -64,7 +64,7 @@ const ChatPage = () => {
                         {channel.name}
                       </Button>
                     )
-                    : (
+                : (
                       <Dropdown as="div" className="d-flex btn-group">
                         <Button
                           variant={channel.id === currentChannelId ? 'secondary' : 'light'}
@@ -74,19 +74,19 @@ const ChatPage = () => {
                           <span className="me-1">#</span>
                           {channel.name}
                         </Button>
-                  <Dropdown.Toggle
-                    split
-                    variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                    id={`dropdown-split-basic-${channel.id}`}
-                    className="flex-grow-0"
-                  >
-                    <span className="visually-hidden">{t('channels.menu')}</span>
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>{t('channels.remove')}</Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>{t('channels.rename')}</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                        <Dropdown.Toggle
+                          split
+                          variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                          id={`dropdown-split-basic-${channel.id}`}
+                          className="flex-grow-0"
+                       >
+                         <span className="visually-hidden">{t('channels.menu')}</span>
+                        </Dropdown.Toggle>
+                       <Dropdown.Menu>
+                         <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>{t('channels.remove')}</Dropdown.Item>
+                         <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>{t('channels.rename')}</Dropdown.Item>
+                       </Dropdown.Menu>
+                      </Dropdown>
                     )}
               </Nav.Item>
             ))}
@@ -102,7 +102,7 @@ const ChatPage = () => {
               </b>
             </p>
             <span className="text-muted">{`${currentMessages.length} ${t('chat.messages')}`}</span>
-         </div>
+          </div>
 
           <div
             id="messages-box"
@@ -118,7 +118,6 @@ const ChatPage = () => {
               </div>
             ))}
           </div>
-          
           <div className="mt-auto px-5 py-3 flex-shrink-0">
             <MessageForm />
           </div>
