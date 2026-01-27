@@ -64,7 +64,7 @@ const ChatPage = () => {
                         {channel.name}
                       </Button>
                     )
-                : (
+                  : (
                       <Dropdown as="div" className="d-flex btn-group">
                         <Button
                           variant={channel.id === currentChannelId ? 'secondary' : 'light'}
@@ -79,13 +79,13 @@ const ChatPage = () => {
                           variant={channel.id === currentChannelId ? 'secondary' : 'light'}
                           id={`dropdown-split-basic-${channel.id}`}
                           className="flex-grow-0"
-                       >
-                         <span className="visually-hidden">{t('channels.menu')}</span>
+                        >
+                          <span className="visually-hidden">{t('channels.menu')}</span>
                         </Dropdown.Toggle>
-                       <Dropdown.Menu>
-                         <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>{t('channels.remove')}</Dropdown.Item>
-                         <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>{t('channels.rename')}</Dropdown.Item>
-                       </Dropdown.Menu>
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>{t('channels.remove')}</Dropdown.Item>
+                          <Dropdown.Item onClick={() => handleRenameChannel(channel.id)}>{t('channels.rename')}</Dropdown.Item>
+                        </Dropdown.Menu>
                       </Dropdown>
                     )}
               </Nav.Item>
