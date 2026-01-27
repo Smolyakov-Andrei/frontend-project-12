@@ -45,8 +45,6 @@ const ChatPage = () => {
   return (
     <Container fluid style={{ height: '100vh', overflow: 'hidden' }} className="my-4 rounded shadow">
       <Row className="h-100 bg-white flex-md-row">
-        
-        {/* Левая колонка */}
         <Col xs={4} md={2} className="border-end pt-5 px-0 bg-light d-flex flex-column h-100">
           <div className="d-flex justify-content-between mb-2 ps-4 pe-2 flex-shrink-0">
             <span>{t('chat.channels')}</span>
@@ -57,25 +55,25 @@ const ChatPage = () => {
               <Nav.Item as="li" key={channel.id} className="w-100">
                 {!channel.removable
                   ? (
-                    <Button
-                      variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                      className="w-100 rounded-0 text-start"
-                      onClick={() => dispatch(setCurrentChannel(channel.id))}
-                    >
-                      <span className="me-1">#</span>
-                      {channel.name}
-                    </Button>
-                  )
-                  : (
-                    <Dropdown as="div" className="d-flex btn-group">
                       <Button
                         variant={channel.id === currentChannelId ? 'secondary' : 'light'}
-                        className="w-100 rounded-0 text-start text-truncate"
+                        className="w-100 rounded-0 text-start"
                         onClick={() => dispatch(setCurrentChannel(channel.id))}
                       >
                         <span className="me-1">#</span>
                         {channel.name}
                       </Button>
+                    )
+                    : (
+                      <Dropdown as="div" className="d-flex btn-group">
+                        <Button
+                          variant={channel.id === currentChannelId ? 'secondary' : 'light'}
+                          className="w-100 rounded-0 text-start text-truncate"
+                          onClick={() => dispatch(setCurrentChannel(channel.id))}
+                        >
+                          <span className="me-1">#</span>
+                          {channel.name}
+                        </Button>
                       <Dropdown.Toggle
                         split
                         variant={channel.id === currentChannelId ? 'secondary' : 'light'}
@@ -95,11 +93,12 @@ const ChatPage = () => {
           </Nav>
         </Col>
 
-        {/* Правая колонка */}
         <Col className="p-0 h-100 d-flex flex-column">
           <div className="bg-light mb-4 p-3 shadow-sm small flex-shrink-0">
             <p className="m-0">
-              <b># {currentChannel?.name}</b>
+              <b>
+                # 
+                {currentChannel?.name}</b>
             </p>
             <span className="text-muted">{`${currentMessages.length} ${t('chat.messages')}`}</span>
           </div>
@@ -108,7 +107,7 @@ const ChatPage = () => {
           <div 
             id="messages-box" 
             className="chat-messages px-5 "
-            style={{ flex: 1, overflowY: 'auto' }} // Явный стиль для надежности
+            style={{ flex: 1, overflowY: 'auto' }}
             ref={messagesBoxRef}
           >
             {currentMessages.map(message => (

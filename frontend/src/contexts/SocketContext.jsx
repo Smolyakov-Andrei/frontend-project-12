@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { io } from 'socket.io-client'
 import { useDispatch } from 'react-redux'
 import { addMessage } from '../slices/messagesSlice.js'
@@ -13,10 +13,10 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     const newSocket = io()
 
-    newSocket.on('newMessage', (payload) => dispatch(addMessage(payload)))
-    newSocket.on('newChannel', (payload) => dispatch(addChannel(payload)))
-    newSocket.on('removeChannel', (payload) => dispatch(removeChannel(payload.id)))
-    newSocket.on('renameChannel', (payload) => dispatch(renameChannel(payload)))
+    newSocket.on('newMessage', payload => dispatch(addMessage(payload)))
+    newSocket.on('newChannel', payload => dispatch(addChannel(payload)))
+    newSocket.on('removeChannel', payload => dispatch(removeChannel(payload.id)))
+    newSocket.on('renameChannel', payload => dispatch(renameChannel(payload)))
 
     setSocket(newSocket)
 
@@ -25,16 +25,16 @@ export const SocketProvider = ({ children }) => {
     }
   }, [dispatch])
 
-  const sendMessage = (data) => socket?.emit('newMessage', data)
+  const sendMessage = data => socket?.emit('newMessage', data)
 
-  const createNewChannel = (name) => new Promise((resolve, reject) => {
+  const createNewChannel = name => new Promise((resolve, reject) => {
     socket?.emit('newChannel', { name }, (response) => {
       if (response.status === 'ok') resolve(response.data)
       else reject()
     })
   })
 
-  const deleteExistingChannel = (id) => new Promise((resolve, reject) => {
+  const deleteExistingChannel = id => new Promise((resolve, reject) => {
     socket?.emit('removeChannel', { id }, (response) => {
       if (response.status === 'ok') resolve()
       else reject()
