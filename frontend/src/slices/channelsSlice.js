@@ -20,7 +20,6 @@ const channelsSlice = createSlice({
   initialState: { channels: [], currentChannelId: defaultChannelId, loading: 'idle', error: null },
   reducers: {
     addChannel: (state, { payload }) => {
-      console.log('[DEBUG] 3. ОБНОВЛЕНИЕ состояния Redux. Добавляем канал:', payload)
       state.channels.push(payload)
     },
     removeChannel: (state, { payload: id }) => {

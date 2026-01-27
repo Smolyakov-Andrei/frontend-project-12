@@ -67,7 +67,6 @@ const SignUpPage = () => {
                     placeholder={t('signup.username')}
                     name="username"
                     id="username"
-                    autoComplete="username"
                     onChange={f.handleChange}
                     onBlur={f.handleBlur}
                     value={f.values.username}
@@ -86,7 +85,6 @@ const SignUpPage = () => {
                     placeholder={t('signup.password')}
                     name="password"
                     id="password"
-                    autoComplete="new-password"
                     onChange={f.handleChange}
                     onBlur={f.handleBlur}
                     value={f.values.password}
@@ -104,7 +102,6 @@ const SignUpPage = () => {
                     placeholder={t('signup.confirmPassword')}
                     name="confirmPassword"
                     id="confirmPassword"
-                    autoComplete="new-password"
                     onChange={f.handleChange}
                     onBlur={f.handleBlur}
                     value={f.values.confirmPassword}

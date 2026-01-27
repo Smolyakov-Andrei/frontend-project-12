@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { io } from 'socket.io-client'
 import { useDispatch } from 'react-redux'
 import { addMessage } from '../slices/messagesSlice.js'
@@ -8,52 +8,43 @@ const SocketContext = createContext({})
 
 export const SocketProvider = ({ children }) => {
   const dispatch = useDispatch()
+  const [socket, setSocket] = useState(null)
 
-  const socket = useMemo(() => {
+  useEffect(() => {
     const newSocket = io()
 
-    newSocket.on('newMessage', payload => dispatch(addMessage(payload)))
-    newSocket.on('newChannel', (payload) => {
-      dispatch(addChannel(payload))
-    })
-    newSocket.on('removeChannel', payload => dispatch(removeChannel(payload.id)))
-    newSocket.on('renameChannel', payload => dispatch(renameChannel(payload)))
+    newSocket.on('newMessage', (payload) => dispatch(addMessage(payload)))
+    newSocket.on('newChannel', (payload) => dispatch(addChannel(payload)))
+    newSocket.on('removeChannel', (payload) => dispatch(removeChannel(payload.id)))
+    newSocket.on('renameChannel', (payload) => dispatch(renameChannel(payload)))
 
-    return newSocket
+    setSocket(newSocket)
+
+    return () => {
+      newSocket.disconnect()
+    }
   }, [dispatch])
 
-  const sendMessage = data => socket.emit('newMessage', data)
+  const sendMessage = (data) => socket?.emit('newMessage', data)
 
-  const createNewChannel = name => new Promise((resolve, reject) => {
-    socket.emit('newChannel', { name }, (response) => {
-      if (response.status === 'ok') {
-        resolve(response.data)
-      }
-      else {
-        reject()
-      }
+  const createNewChannel = (name) => new Promise((resolve, reject) => {
+    socket?.emit('newChannel', { name }, (response) => {
+      if (response.status === 'ok') resolve(response.data)
+      else reject()
     })
   })
 
-  const deleteExistingChannel = id => new Promise((resolve, reject) => {
-    socket.emit('removeChannel', { id }, (response) => {
-      if (response.status === 'ok') {
-        resolve()
-      }
-      else {
-        reject()
-      }
+  const deleteExistingChannel = (id) => new Promise((resolve, reject) => {
+    socket?.emit('removeChannel', { id }, (response) => {
+      if (response.status === 'ok') resolve()
+      else reject()
     })
   })
 
   const renameExistingChannel = (id, name) => new Promise((resolve, reject) => {
-    socket.emit('renameChannel', { id, name }, (response) => {
-      if (response.status === 'ok') {
-        resolve()
-      }
-      else {
-        reject()
-      }
+    socket?.emit('renameChannel', { id, name }, (response) => {
+      if (response.status === 'ok') resolve()
+      else reject()
     })
   })
 
@@ -62,7 +53,7 @@ export const SocketProvider = ({ children }) => {
     createNewChannel,
     deleteExistingChannel,
     renameExistingChannel,
-  }), [])
+  }), [socket])
 
   return (
     <SocketContext.Provider value={value}>

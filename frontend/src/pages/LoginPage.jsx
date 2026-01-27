@@ -48,9 +48,6 @@ const LoginPage = () => {
         <Col xs={12} md={8} xxl={6}>
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
-              <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
-                <h2>{t('login.header')}</h2>
-              </Col>
               <Formik
                 initialValues={{ username: '', password: '' }}
                 onSubmit={handleSubmit}

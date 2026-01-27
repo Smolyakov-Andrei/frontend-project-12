@@ -49,7 +49,6 @@ const MessageForm = () => {
           className="border-0 p-0 ps-2"
           onChange={formik.handleChange}
           value={formik.values.body}
-          disabled={formik.isSubmitting}
         />
         <Button type="submit" variant="group-vertical" disabled={!formik.values.body.trim()}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
